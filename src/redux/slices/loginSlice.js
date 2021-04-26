@@ -3,20 +3,37 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const loginSlice = createSlice({
   name: 'login',
-  initialState: {},
+  initialState: {
+      isLoading: false,
+      errors: {},
+  },
   reducers: {
-    login() {},
-    setUser(state , action) {
-        console.log({...state})
-        console.log(action.payload)
+    login(state) {
         return {
             ...state,
-            ...action.payload
+            isLoading: true
+        }
+    },
+    googleLoginAction(){},
+    setLoginSuccessResponse(state , action) {
+        const {key} = action.payload
+        localStorage.setItem("token", key)
+        localStorage.setItem("isAuthenticate", "true")
+        return {
+            errors: {},
+            isLoading: false
+        }
+    },
+    setLoginErrorResponse(state, action) {
+        localStorage.setItem("isAuthenticate", "false")
+        localStorage.removeItem("token")
+        return {
+            errors: action.payload,
         }
     }
   }
 })
 
-export const { login, setUser } = loginSlice.actions
+export const { login, setLoginSuccessResponse, googleLoginAction, setLoginErrorResponse } = loginSlice.actions
 
 export default loginSlice.reducer

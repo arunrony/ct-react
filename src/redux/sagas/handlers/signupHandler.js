@@ -1,15 +1,16 @@
-import {call} from "redux-saga/effects";
+import {call, put} from "redux-saga/effects";
 import {signupRequest} from "../requests/signupRequest";
+import {yellow} from "@material-ui/core/colors";
+import {setSignupErrorResponse, setSignupSuccessResponse} from "../../slices/signupSlice";
 
 export function* signupHandler(action) {
     try {
         const response = yield call(signupRequest, action.payload);
         console.log(response)
-        const {data} = response
-        console.log(data)
+        yield put(setSignupSuccessResponse({...response.data}))
         // yield put(setUser({...data}))
     } catch (error) {
         console.log('Error console')
-        console.log(error)
+        yield put(setSignupErrorResponse({...error.response.data}))
     }
 }

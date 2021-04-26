@@ -11,8 +11,10 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
-import {useDispatch} from "react-redux";
-import {login} from "../redux/slices/loginSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {googleLoginAction, login} from "../redux/slices/loginSlice";
+import {GoogleLogin} from 'react-google-login';
+import {CircularProgress} from "@material-ui/core";
 
 
 const useStyles = makeStyles(theme => ({
@@ -47,6 +49,7 @@ const useStyles = makeStyles(theme => ({
 const SignInSide = () => {
     const classes = useStyles();
     const dispatch = useDispatch()
+    const { errors, isLoading} = useSelector(state => state.login)
     const [loginPayload, setLoginPayload] = useState({
       email: "",
       password: ""
@@ -55,6 +58,10 @@ const SignInSide = () => {
         const {name, value} = e.target
         setLoginPayload({...loginPayload, [name]: value})
       console.log(loginPayload)
+    }
+    const handleGoogleLoginSuccess = response => {
+        const {accessToken, tokenId} = response
+        dispatch(googleLoginAction({access_token: accessToken, id_token: tokenId}))
     }
     const handleSubmit = e => {
       e.preventDefault()
@@ -69,11 +76,20 @@ const SignInSide = () => {
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon/>
                     </Avatar>
+                    <GoogleLogin
+                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                        onSuccess={handleGoogleLoginSuccess}
+                        onFailure={(error) => console.log(error)}
+                    />
+                    <Typography component="h1" variant={"caption"}>
+                        {errors.hasOwnProperty("non_field_errors") && errors.non_field_errors}
+                    </Typography>
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
                     <form className={classes.form} noValidate>
                         <TextField
+                            type="text"
                             variant="outlined"
                             margin="normal"
                             required
@@ -85,6 +101,8 @@ const SignInSide = () => {
                             autoFocus
                             value={loginPayload.email}
                             onChange={handleChange}
+                            error={errors.hasOwnProperty("email")}
+                            helperText={errors.hasOwnProperty("email") && errors.email[0]}
                         />
                         <TextField
                             variant="outlined"
@@ -98,6 +116,8 @@ const SignInSide = () => {
                             autoComplete="current-password"
                             value={loginPayload.password}
                             onChange={handleChange}
+                            error={errors.hasOwnProperty("password")}
+                            helperText={errors.hasOwnProperty("password") && errors.password[0]}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary"/>}
@@ -110,7 +130,9 @@ const SignInSide = () => {
                             color="primary"
                             className={classes.submit}
                             onClick={handleSubmit}
+                            disabled={isLoading}
                         >
+                            {isLoading && <CircularProgress  size={20}/>}
                             Sign In
                         </Button>
                         <Grid container>

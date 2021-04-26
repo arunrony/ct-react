@@ -11,8 +11,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {signupAction} from "../redux/slices/signupSlice";
+import {CircularProgress} from "@material-ui/core";
 
 
 const useStyles = makeStyles(theme => ({
@@ -43,12 +44,13 @@ const useStyles = makeStyles(theme => ({
 export default function SignUp() {
   const classes = useStyles();
   const dispatch = useDispatch()
+  const {errors, isLoading} = useSelector(state => state.signup)
   const [signupPayload, setSignupPayload] = useState({
-    "firstName": "",
-    "lastName": "",
+    "first_name": "",
+    "last_name": "",
     "email": "",
-    "password": "",
-    "confirmPassword": "",
+    "password1": "",
+    "password2": "",
   })
   const handleSubmit = e => {
     e.preventDefault()
@@ -73,15 +75,17 @@ export default function SignUp() {
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="first_name"
                 variant="outlined"
                 required
                 fullWidth
                 id="firstName"
                 label="First Name"
                 autoFocus
-                value={signupPayload.firstName}
+                value={signupPayload.first_name}
                 onChange={handleChange}
+                error={errors.hasOwnProperty("first_name")}
+                helperText={errors.hasOwnProperty("first_name") && errors.first_name[0]}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -91,10 +95,12 @@ export default function SignUp() {
                 fullWidth
                 id="lastName"
                 label="Last Name"
-                name="lastName"
+                name="last_name"
                 autoComplete="lname"
-                value={signupPayload.lastName}
+                value={signupPayload.last_name}
                 onChange={handleChange}
+                error={errors.hasOwnProperty("last_name")}
+                helperText={errors.hasOwnProperty("last_name") && errors.last_name[0]}
               />
             </Grid>
             <Grid item xs={12}>
@@ -108,6 +114,8 @@ export default function SignUp() {
                 autoComplete="email"
                 value={signupPayload.email}
                 onChange={handleChange}
+                error={errors.hasOwnProperty("email")}
+                helperText={errors.hasOwnProperty("email") && errors.email[0]}
               />
             </Grid>
             <Grid item xs={12}>
@@ -115,13 +123,15 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
+                name="password1"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                value={signupPayload.password}
+                value={signupPayload.password1}
                 onChange={handleChange}
+                error={errors.hasOwnProperty("password1")}
+                helperText={errors.hasOwnProperty("password1") && errors.password1[0]}
               />
             </Grid>
             <Grid item xs={12}>
@@ -129,14 +139,19 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                name="confirmPassword"
+                name="password2"
                 label="Confirm Password"
                 type="password"
                 id="confirmPassword"
-                value={signupPayload.confirmPassword}
+                value={signupPayload.password2}
                 onChange={handleChange}
+                error={errors.hasOwnProperty("password2")}
+                helperText={errors.hasOwnProperty("password2") && errors.password2[0]}
               />
             </Grid>
+            <Typography component="h1" variant={"caption"}>
+                        {errors.hasOwnProperty("non_field_errors") && errors.non_field_errors}
+                    </Typography>
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -151,7 +166,9 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
             onClick={handleSubmit}
+            disabled={isLoading}
           >
+            {isLoading && <CircularProgress  size={20}/>}
             Sign Up
           </Button>
           <Grid container justify="flex-end">
