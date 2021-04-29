@@ -6,7 +6,8 @@ const useStyles = makeStyles(theme => ({
     brand: {
         lineHeight: 1,
         marginRight: 'auto',
-        minHeight: "100px"
+        minHeight: "100px",
+        minWidth:"250px"
     },
     link: {
         color: "#fff",
