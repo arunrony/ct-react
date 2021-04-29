@@ -7,6 +7,7 @@ import LoginPage from "./pages/login/LoginPage";
 import {CssBaseline} from "@material-ui/core";
 import SignupPage from "./pages/signup/SignupPage";
 import PasswordResetPage from "./pages/passwordreset/PasswordResetPage";
+import ContactPage from "./pages/contact/ContactPage";
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                     <Route path="/" exact component={LoginPage}/>
                     <Route exact path="/signup" component={SignupPage}/>
                     <Route exact path="/password-reset" component={PasswordResetPage}/>
+                    <Route exact path="/contact-us" component={ContactPage}/>
                     <Route exact path="/set-password/:uid/:token" component={SetPassword}/>
                 </Router>
             </CssBaseline>

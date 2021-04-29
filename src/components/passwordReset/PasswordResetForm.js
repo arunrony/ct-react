@@ -13,7 +13,9 @@ import {CircularProgress} from "@material-ui/core";
 export default function PasswordResetForm() {
   const dispatch = useDispatch()
   const {errors, isLoading} = useSelector(state => state.passwordReset)
-  const [resetEmail, setResetEmail] = useState()
+  const [resetEmail, setResetEmail] = useState({
+    email: ""
+  })
   const handleChange = e => {
     const {name, value} = e.target
     setResetEmail({
