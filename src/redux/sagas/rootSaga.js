@@ -3,9 +3,16 @@ import {googleLoginAction, login} from "../slices/loginSlice";
 import {googleLoginHandler, loginHandler} from "./handlers/loginHandler";
 import {signupAction} from "../slices/signupSlice";
 import {signupHandler} from "./handlers/signupHandler";
+import {passwordResetAction} from "../slices/passwordResetSlice";
+import {passwordResetHandler} from "./handlers/passwordResetHandler";
+import {setPasswordAction} from "../slices/setPasswordSlice";
+import {setPasswordHandler} from "./handlers/setPasswordHandler";
+import {takeLeading} from "@redux-saga/core/effects";
 
 export function* watcherSaga(){
-    yield takeLatest(login.type, loginHandler)
-    yield takeLatest(signupAction.type, signupHandler)
+    yield takeLeading(login.type, loginHandler)
+    yield takeLeading(signupAction.type, signupHandler)
     yield takeLatest(googleLoginAction.type, googleLoginHandler)
+    yield takeLeading(passwordResetAction.type, passwordResetHandler)
+    yield takeLeading(setPasswordAction.type, setPasswordHandler)
 }

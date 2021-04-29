@@ -1,6 +1,5 @@
 import {call, put} from "redux-saga/effects";
 import {signupRequest} from "../requests/signupRequest";
-import {yellow} from "@material-ui/core/colors";
 import {setSignupErrorResponse, setSignupSuccessResponse} from "../../slices/signupSlice";
 
 export function* signupHandler(action) {
