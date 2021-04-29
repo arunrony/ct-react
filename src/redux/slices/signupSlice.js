@@ -17,14 +17,14 @@ const signupSlice = createSlice({
     setSignupSuccessResponse(state, action) {
       const {key} = action.payload
       localStorage.setItem("token", key)
-      localStorage.setItem("isAuthenticate", "true")
+      localStorage.setItem("isAuthenticated", "true")
       return {
         errors: {},
         isLoading: false
       }
     },
     setSignupErrorResponse(state, action) {
-      localStorage.setItem("isAuthenticate", "false")
+      localStorage.setItem("isAuthenticated", "false")
       localStorage.removeItem("token")
       return {
             errors: action.payload,

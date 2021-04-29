@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {BrowserRouter, BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Provider} from "react-redux";
 import store from "./redux/store";
 import React from "react";
@@ -8,21 +8,22 @@ import {CssBaseline} from "@material-ui/core";
 import SignupPage from "./pages/signup/SignupPage";
 import PasswordResetPage from "./pages/passwordreset/PasswordResetPage";
 import ContactPage from "./pages/contact/ContactPage";
+import PublicRoute from "./routes/PublicRoute";
+import PrivateRoute from "./routes/PrivateRoute";
+import RouteList from "./routes/RouteList";
 
 function App() {
-    return (
-        <Provider store={store}>
-            <CssBaseline>
-                <Router>
-                    <Route path="/" exact component={LoginPage}/>
-                    <Route exact path="/signup" component={SignupPage}/>
-                    <Route exact path="/password-reset" component={PasswordResetPage}/>
-                    <Route exact path="/contact-us" component={ContactPage}/>
-                    <Route exact path="/set-password/:uid/:token" component={SetPassword}/>
-                </Router>
-            </CssBaseline>
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <CssBaseline>
+        <BrowserRouter>
+          <Switch>
+            <RouteList/>
+          </Switch>
+        </BrowserRouter>
+      </CssBaseline>
+    </Provider>
+  );
 }
 
 export default App;
