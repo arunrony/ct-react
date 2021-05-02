@@ -12,6 +12,8 @@ import Link from "@material-ui/core/Link";
 import {projectEditClickAction} from "../../redux/slices/project/editProjectSlice";
 import EditProject from "./EditProject";
 import mapboxSlice from "../../redux/slices/mapboxSlice";
+import {projectDeleteCLickAction} from "../../redux/slices/project/deleteProject";
+import DeleteProject from "./DeleteProject";
 
 const useStyle = makeStyles({
   content: {
@@ -27,16 +29,21 @@ const ProjectSelect = () => {
   }, [])
   const projects = useSelector(state => state.project.projectsList)
   const {selectedProject, editActive} = useSelector(state => state.editProject)
+  const {deleteSelectedProject, deleteActive} = useSelector(state => state.deleteProject)
 
   const handleEdit = (projectId, name) => {
     dispatch(projectEditClickAction({selectedProject: projectId, projectName: name}))
+  }
+
+  const handleDelete = (projectId, projectName) => {
+      dispatch(projectDeleteCLickAction({selectedProject: projectId, projectName: projectName}))
   }
 
   return (
     <>
       {projects.map((project) => {
         return <div key={project.id}>
-          <Card hidden={editActive}>
+          <Card hidden={editActive || deleteActive}>
             <Grid container>
               <Link>
                 <CardContent className={classes.content}>
@@ -64,13 +71,18 @@ const ProjectSelect = () => {
                   startIcon={<DeleteIcon/>}
                   color="secondary"
                   variant="contained"
-                  size="small">Delete</Button>
+                  size="small"
+                  onClick={() => handleDelete(project.id, project.name)}
+                >
+                  Delete
+                </Button>
 
               </CardActions>
             </Grid>
           </Card>
           <div>
             {selectedProject === project.id ? <EditProject/> : ""}
+            {deleteSelectedProject === project.id ? <DeleteProject/> : ""}
           </div>
 
         </div>

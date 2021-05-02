@@ -7,6 +7,7 @@ import mapbox from "./slices/mapboxSlice"
 import project from "./slices/project/projectsSlice"
 import notification from "./slices/notificationSlice"
 import editProject from "./slices/project/editProjectSlice"
+import deleteProject from "./slices/project/deleteProject"
 
 const rootReducer = combineReducers({
     login: loginSlice,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     mapbox: mapbox,
     project: project,
     notification: notification,
-    editProject: editProject
+    editProject: editProject,
+    deleteProject: deleteProject
 })
 
 

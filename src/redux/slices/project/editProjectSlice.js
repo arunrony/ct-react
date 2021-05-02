@@ -10,7 +10,9 @@ const editProject = createSlice({
     projectName: "",
     successMessage: "",
     errorMessage: "",
-    isLoading: false
+    isLoading: false,
+    updatedProjectData: {},
+    showSnackbar: false
   },
   reducers: {
     projectEditClickAction(state, action) {
@@ -30,7 +32,35 @@ const editProject = createSlice({
         projectName: action.payload.projectName
       }
     },
-    editProjectCancelAction() {
+    updateProjectNameAction(state) {
+      return {
+        ...state,
+        isLoading: true
+      }
+    },
+    setUpdateProjectNameFailedAction(state, action) {
+      console.log("failed edit")
+      console.log(action.payload)
+      // const {message} = action.payload
+      return {
+        ...state,
+        errorMessage: action.payload.message,
+        isLoading: false,
+        successMessage: "",
+        showSnackbar: true
+      }
+    },
+    setUpdateProjectNameSuccessAction(state, action) {
+      return {
+        ...state,
+        isLoading: false,
+        successMessage: action.payload.message,
+        errorMessage: "",
+        updatedProjectData: action.payload.project,
+        showSnackbar: true
+      }
+    },
+    resetProjectEditAction() {
       return {
         selectedProject: null,
         editActive: false,
@@ -41,31 +71,6 @@ const editProject = createSlice({
         errorMessage: "",
         isLoading: false
       }
-    },
-    updateProjectNameAction(state) {
-      return{
-        ...state,
-        isLoading: true
-      }
-    },
-    setUpdateProjectNameFailedAction(state, action){
-      console.log("failed edit")
-      console.log(action.payload)
-      // const {message} = action.payload
-      return {
-        ...state,
-        errorMessage: action.payload.message,
-        isLoading: false,
-        successMessage: ""
-      }
-    },
-    setUpdateProjectNameSuccessAction(state, action) {
-      return{
-        ...state,
-        isLoading: false,
-        successMessage: action.payload.message,
-        errorMessage: ""
-      }
     }
   }
 })
@@ -73,10 +78,10 @@ const editProject = createSlice({
 export const {
   projectEditClickAction,
   changeProjectNameAction,
-  editProjectCancelAction,
   updateProjectNameAction,
   setUpdateProjectNameFailedAction,
-  setUpdateProjectNameSuccessAction
+  setUpdateProjectNameSuccessAction,
+  resetProjectEditAction
 } = editProject.actions
 
 export default editProject.reducer

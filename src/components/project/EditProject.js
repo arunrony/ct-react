@@ -1,14 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
-import {Card, CardActions, CardContent, Grid, TextField} from "@material-ui/core";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
-import moment from "moment";
+import {Card, CardActions, CardContent, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
 import {
   changeProjectNameAction,
-  editProjectCancelAction,
+  resetProjectEditAction,
   updateProjectNameAction
 } from "../../redux/slices/project/editProjectSlice";
 import SaveIcon from '@material-ui/icons/Save';
@@ -16,6 +11,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import {makeStyles} from "@material-ui/core/styles";
 import {useEffect} from "react";
 import {notificationOpen} from "../../redux/slices/notificationSlice";
+import {updateProjectsData} from "../../redux/slices/project/projectsSlice";
 
 const useStyle = makeStyles({
   actions: {
@@ -31,14 +27,17 @@ const EditProject = () => {
 
   //Show snackbar massage
   useEffect(() => {
-    if(projectEditState.errorMessage) {
-      dispatch(notificationOpen({type:"error", message: projectEditState.errorMessage}))
+    if (projectEditState.showSnackbar) {
+      if (projectEditState.errorMessage) {
+        dispatch(notificationOpen({type: "error", message: projectEditState.errorMessage}))
+      }
+      if (projectEditState.successMessage) {
+        dispatch(notificationOpen({type: "success", message: projectEditState.successMessage}))
+        dispatch(updateProjectsData({updatedProject: projectEditState.updatedProjectData}))
+        dispatch(resetProjectEditAction())
+      }
     }
-    if(projectEditState.successMessage) {
-      dispatch(notificationOpen({type:"success", message: projectEditState.successMessage}))
-    }
-
-  }, [projectEditState.successMessage, projectEditState.errorMessage])
+  })
 
   const handleChange = e => {
     dispatch(changeProjectNameAction({projectName: e.target.value}))
@@ -46,12 +45,15 @@ const EditProject = () => {
 
   const handleCancel = e => {
     e.preventDefault()
-    dispatch(editProjectCancelAction())
+    dispatch(resetProjectEditAction())
   }
 
   const handleSave = e => {
     e.preventDefault()
-    dispatch(updateProjectNameAction({projectId: projectEditState.selectedProject, data: {name: projectEditState.projectName}}))
+    dispatch(updateProjectNameAction({
+      projectId: projectEditState.selectedProject,
+      data: {name: projectEditState.projectName}
+    }))
   }
 
   return (

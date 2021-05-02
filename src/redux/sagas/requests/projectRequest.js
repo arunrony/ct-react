@@ -15,3 +15,11 @@ export function updateProjectNameRequest(payload) {
         data:data
     })
 }
+
+export function deleteProjectRequest(payload) {
+    const {projectId } = payload
+    return PrivateAPI.request({
+        method:"delete",
+        url: `api/v2/project/delete/${projectId}`,
+    })
+}

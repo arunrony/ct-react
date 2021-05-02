@@ -20,9 +20,21 @@ const projectsSlice = createSlice({
         projectsList: action.payload
       }
     },
+    updateProjectsData(state, action) {
+      console.log(state)
+      console.log(action)
+      const index = state.projectsList.findIndex((project) => project.id === action.payload.updatedProject.id)
+      void(state.projectsList[index] = action.payload.updatedProject)
+
+    },
+    deleteProjectDataAction(state, action) {
+      const index = state.projectsList.findIndex((project) => project.id === action.payload.projectId)
+      console.log(index)
+      void(delete state.projectsList[index])
+    }
   }
 
 })
 
-export const {getProjectsAction, setGetProjectsSuccessAction} = projectsSlice.actions
+export const {getProjectsAction, setGetProjectsSuccessAction, updateProjectsData, deleteProjectDataAction} = projectsSlice.actions
 export default projectsSlice.reducer
