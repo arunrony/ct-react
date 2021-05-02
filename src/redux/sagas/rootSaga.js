@@ -8,6 +8,9 @@ import {passwordResetHandler} from "./handlers/passwordResetHandler";
 import {setPasswordAction} from "../slices/setPasswordSlice";
 import {setPasswordHandler} from "./handlers/setPasswordHandler";
 import {takeLeading} from "@redux-saga/core/effects";
+import {getProjectsAction} from "../slices/project/projectsSlice";
+import {getProjectHandler, updateProjectNameHandler} from "./handlers/projectHandler";
+import {updateProjectNameAction} from "../slices/project/editProjectSlice";
 
 export function* watcherSaga(){
     yield takeLeading(login.type, loginHandler)
@@ -15,4 +18,6 @@ export function* watcherSaga(){
     yield takeLatest(googleLoginAction.type, googleLoginHandler)
     yield takeLeading(passwordResetAction.type, passwordResetHandler)
     yield takeLeading(setPasswordAction.type, setPasswordHandler)
+    yield takeLeading(getProjectsAction.type, getProjectHandler)
+    yield takeLeading(updateProjectNameAction.type, updateProjectNameHandler)
 }

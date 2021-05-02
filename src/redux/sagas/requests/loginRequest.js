@@ -1,7 +1,7 @@
-import API from "../../../utils/API";
+import PublicAPI from "../../../utils/PublicAPI";
 
 export function loginRequest(payload) {
-    return API.request({
+    return PublicAPI.request({
         method: "post",
         url: "api/v3/auth/login/",
         data: payload
@@ -9,7 +9,7 @@ export function loginRequest(payload) {
 }
 
 export function googleLoginRequest(payload) {
-    return API.request({
+    return PublicAPI.request({
         method: "post",
         url: "api/v3/auth/google-login/",
         data: payload

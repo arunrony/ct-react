@@ -1,7 +1,7 @@
-import API from "../../../utils/API";
+import PublicAPI from "../../../utils/PublicAPI";
 
 export function setPasswordRequest(payload) {
-    return  API.request({
+    return  PublicAPI.request({
         method: "post",
         url: "/api/v3/auth/password/reset/confirm/",
         data:payload
