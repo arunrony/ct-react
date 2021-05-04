@@ -1,11 +1,21 @@
 import {call, put} from "redux-saga/effects";
-import {getProjectsAction, setGetProjectsSuccessAction} from "../../slices/project/projectsSlice";
-import {deleteProjectRequest, getProjectRequest, updateProjectNameRequest} from "../requests/projectRequest";
+import {setGetProjectsSuccessAction} from "../../slices/project/projectsSlice";
+import {
+  createGeoTIFFProjectHandlerRequest,
+  createRawProjectRequest,
+  deleteProjectRequest,
+  getProjectRequest,
+  updateProjectNameRequest, uploadRawProjectImageRequest
+} from "../requests/projectRequest";
 import {
   setUpdateProjectNameFailedAction,
   setUpdateProjectNameSuccessAction
 } from "../../slices/project/editProjectSlice";
-import {setDeleteProjectFailedAction, setDeleteProjectSuccessAction} from "../../slices/project/deleteProject";
+import {setDeleteProjectFailedAction, setDeleteProjectSuccessAction} from "../../slices/project/deleteProjectSlice";
+import {
+  setCreateRawProjectFailedAction,
+  setCreateRawProjectSuccessAction
+} from "../../slices/project/createProjectSlice";
 
 export function* getProjectHandler(action) {
   try {
@@ -48,6 +58,48 @@ export function* deleteProjectHandler(action) {
     } else {
       yield put(setDeleteProjectFailedAction({message: response.data.message}))
     }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* createRawProjectHandler(action) {
+  try {
+    const response = yield call(createRawProjectRequest, action.payload)
+    const {status} = response.data
+    if (status === "ok") {
+      yield put(setCreateRawProjectSuccessAction({...response.data}))
+    } else {
+      yield put(setCreateRawProjectFailedAction({...response.data}))
+    }
+    console.log(response)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* uploadRawProjectImageHandler(action) {
+  try {
+    const response = yield call(uploadRawProjectImageRequest, action.payload)
+    const {status} = response.data
+    if (status === "ok") {
+      console.log("success")
+      // yield put(setCreateRawProjectSuccessAction({...response.data}))
+    } else {
+      console.log("failed")
+      // yield put(setCreateRawProjectFailedAction({...response.data}))
+    }
+    console.log(response)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* createGeoTIFFProjectHandler(action) {
+  try {
+    const response = yield call(createGeoTIFFProjectHandlerRequest, action.payload)
+    const {status} = response.data
+    console.log(response.data)
   } catch (error) {
     console.log(error)
   }

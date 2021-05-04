@@ -1,12 +1,10 @@
-import {Card, CardActions, CardContent} from "@material-ui/core";
+import {IconButton, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import SaveIcon from "@material-ui/icons/Save";
-import Button from "@material-ui/core/Button";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteProjectAction, resetProjectDeleteAction} from "../../redux/slices/project/deleteProject";
+import {deleteProjectAction, resetProjectDeleteAction} from "../../redux/slices/project/deleteProjectSlice";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CheckIcon from '@material-ui/icons/Check';
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {notificationOpen} from "../../redux/slices/notificationSlice";
 import {deleteProjectDataAction} from "../../redux/slices/project/projectsSlice";
 
@@ -37,34 +35,23 @@ const DeleteProject = () => {
     dispatch(deleteProjectAction({projectId: deleteSelectedProject}))
   }
   return(
-    <Card>
-      <CardContent>
-        <Typography>
-          Are you really want to delete? <Typography>{projectName}</Typography>
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button
-            startIcon={<CheckIcon/>}
-            color="secondary"
-            variant="contained"
-            size="small"
-            onClick={handleConfirm}
-          >
-          Confirm
-        </Button>
-        <Button
-            startIcon={<CancelIcon/>}
-            color="secondary"
-            variant="contained"
-            size="small"
-            onClick={handleCancel}
-          >
-          Cancel
-        </Button>
 
-      </CardActions>
-    </Card>
+    <ListItem divider>
+              <ListItemText primary={projectName} secondaryTypographyProps={{color: "primary"}} secondary={<>
+                <Typography variant="body2" color="error"> Are you really</Typography>
+                <Typography variant="body2" color="error"> want to delete?</Typography>
+              </>}/>
+              <ListItemSecondaryAction>
+                <ListItemIcon>
+                  <IconButton onClick={handleConfirm}><CheckIcon/></IconButton>
+                </ListItemIcon>
+                <ListItemIcon>
+                  <IconButton onClick={handleCancel}><CancelIcon/></IconButton>
+
+                </ListItemIcon>
+              </ListItemSecondaryAction>
+
+            </ListItem>
   )
 }
 export default DeleteProject

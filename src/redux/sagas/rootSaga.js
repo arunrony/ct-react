@@ -7,11 +7,22 @@ import {passwordResetAction} from "../slices/passwordResetSlice";
 import {passwordResetHandler} from "./handlers/passwordResetHandler";
 import {setPasswordAction} from "../slices/setPasswordSlice";
 import {setPasswordHandler} from "./handlers/setPasswordHandler";
-import {takeLeading} from "@redux-saga/core/effects";
+import {takeLeading, takeEvery} from "@redux-saga/core/effects";
 import {getProjectsAction} from "../slices/project/projectsSlice";
-import {deleteProjectHandler, getProjectHandler, updateProjectNameHandler} from "./handlers/projectHandler";
+import {
+    createGeoTIFFProjectHandler,
+    createRawProjectHandler,
+    deleteProjectHandler,
+    getProjectHandler,
+    updateProjectNameHandler, uploadRawProjectImageHandler
+} from "./handlers/projectHandler";
 import {updateProjectNameAction} from "../slices/project/editProjectSlice";
-import {deleteProjectAction} from "../slices/project/deleteProject";
+import {deleteProjectAction} from "../slices/project/deleteProjectSlice";
+import {
+    createGeoTIFFProjectAction,
+    createRawProjectAction,
+    uploadRawProjectImageAction
+} from "../slices/project/createProjectSlice";
 
 export function* watcherSaga(){
     yield takeLeading(login.type, loginHandler)
@@ -22,4 +33,7 @@ export function* watcherSaga(){
     yield takeLeading(getProjectsAction.type, getProjectHandler)
     yield takeLeading(updateProjectNameAction.type, updateProjectNameHandler)
     yield takeLeading(deleteProjectAction.type, deleteProjectHandler)
+    yield takeLeading(createRawProjectAction.type, createRawProjectHandler)
+    yield takeEvery(uploadRawProjectImageAction.type, uploadRawProjectImageHandler)
+    yield takeLeading(createGeoTIFFProjectAction.type, createGeoTIFFProjectHandler)
 }

@@ -1,5 +1,13 @@
 import {useDispatch, useSelector} from "react-redux";
-import {Card, CardActions, CardContent, TextField} from "@material-ui/core";
+import {
+  Card,
+  CardActions,
+  CardContent, IconButton, ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+  TextField
+} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {
   changeProjectNameAction,
@@ -9,9 +17,12 @@ import {
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 import {makeStyles} from "@material-ui/core/styles";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {notificationOpen} from "../../redux/slices/notificationSlice";
 import {updateProjectsData} from "../../redux/slices/project/projectsSlice";
+import Typography from "@material-ui/core/Typography";
+import CheckIcon from "@material-ui/icons/Check";
+import Controls from "../core/Controls";
 
 const useStyle = makeStyles({
   actions: {
@@ -57,48 +68,70 @@ const EditProject = () => {
   }
 
   return (
-    <Card hidden={!projectEditState.editActive}>
-      <form>
-        <CardContent>
+    <ListItem divider>
+      <ListItemText disableTypography>
+        <Controls.Input
+          variant={"standard"}
+          label={"Change Project Name"}
+          name={"projectName"}
+          value={projectEditState.projectName}
+          onChange={handleChange}
+        />
 
-          <TextField
-            variant="outlined"
-            required
-            fullWidth
-            name="projectName"
-            type="text"
-            label="Project Name"
-            value={projectEditState.projectName}
-            onChange={handleChange}
-          >
+      </ListItemText>
+              <ListItemSecondaryAction>
+                <ListItemIcon>
+                  <IconButton onClick={handleSave}><SaveIcon/></IconButton>
+                </ListItemIcon>
+                <ListItemIcon>
+                  <IconButton onClick={handleCancel}><CancelIcon/></IconButton>
 
-          </TextField>
+                </ListItemIcon>
+              </ListItemSecondaryAction>
 
-        </CardContent>
-        <CardActions className={classes.actions}>
-          <Button
-            startIcon={<SaveIcon/>}
-            color="secondary"
-            variant="contained"
-            size="small"
-            name="edit"
-            onClick={handleSave}
-          >
-            Save
-          </Button>
-          <Button
-            startIcon={<CancelIcon/>}
-            color="secondary"
-            variant="contained"
-            size="small"
-            name="edit"
-            onClick={handleCancel}
-          >
-            Cancel
-          </Button>
-        </CardActions>
-      </form>
-    </Card>
+            </ListItem>
+    // <Card hidden={!projectEditState.editActive}>
+    //   <form>
+    //     <CardContent>
+    //
+    //       <TextField
+    //         variant="outlined"
+    //         required
+    //         fullWidth
+    //         name="projectName"
+    //         type="text"
+    //         label="Project Name"
+    //         value={projectEditState.projectName}
+    //         onChange={handleChange}
+    //       >
+    //
+    //       </TextField>
+    //
+    //     </CardContent>
+    //     <CardActions className={classes.actions}>
+    //       <Button
+    //         startIcon={<SaveIcon/>}
+    //         color="secondary"
+    //         variant="contained"
+    //         size="small"
+    //         name="edit"
+    //         onClick={handleSave}
+    //       >
+    //         Save
+    //       </Button>
+    //       <Button
+    //         startIcon={<CancelIcon/>}
+    //         color="secondary"
+    //         variant="contained"
+    //         size="small"
+    //         name="edit"
+    //         onClick={handleCancel}
+    //       >
+    //         Cancel
+    //       </Button>
+    //     </CardActions>
+    //   </form>
+    // </Card>
   )
 }
 export default EditProject
